@@ -1,61 +1,15 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
 import SuggestionCard from "@/components/SuggestionCard";
 import FoodsToAvoid from "@/components/FoodsToAvoid";
+import { getSuggestionData } from "@/lib/suggestionData";
 
-interface Meal {
-  name: string;
-  benefit: string;
-  ingredients: string[];
-  tag: string;
-  avoid: boolean;
-}
-
-interface SuggestionData {
-  heading: string;
-  subtext: string;
-  meals: Meal[];
-  avoid_foods: string[];
-}
-
-export default function SuggestionsPage() {
-  const searchParams = useSearchParams();
-  const mood = searchParams.get("mood") || "stressed";
-  const [data, setData] = useState<SuggestionData | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchSuggestions() {
-      try {
-        const res = await fetch(`/api/suggestions?mood=${mood}`);
-        const result = await res.json();
-        setData(result);
-      } catch (error) {
-        console.error("Failed to fetch suggestions:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchSuggestions();
-  }, [mood]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
-      </div>
-    );
-  }
-
-  if (!data) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-on-surface-variant">Failed to load suggestions</p>
-      </div>
-    );
-  }
+export default function SuggestionsPage({
+  searchParams,
+}: {
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) {
+  const moodValue = searchParams?.mood;
+  const mood = typeof moodValue === "string" ? moodValue : "stressed";
+  const data = getSuggestionData(mood);
 
   return (
     <div className="max-w-[900px] mx-auto px-6 py-12">

@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 export interface MealProps {
   name: string;
   benefit: string;

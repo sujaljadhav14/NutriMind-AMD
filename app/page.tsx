@@ -1,5 +1,4 @@
 import MoodSelector from "@/components/MoodSelector";
-import Image from "next/image";
 
 export default function Home() {
   return (
@@ -14,7 +13,7 @@ export default function Home() {
               How are you feeling right now?
             </h1>
             <p className="text-xl text-on-surface-variant max-w-lg leading-relaxed">
-              Tell us your mood and we'll tell you exactly what to eat.
+              Tell us your mood and we&apos;ll tell you exactly what to eat.
             </p>
           </div>
           
